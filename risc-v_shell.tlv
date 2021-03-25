@@ -91,15 +91,20 @@
    $is_addi = $dec_bits ==? 11'bx_000_0010011;
    $is_add = $dec_bits ==? 11'b0_000_0110011;
    
+   $rd1_en = $rs1_valid;
+   $rd2_end = $rs2_valid;
    $rd1_index[4:0] = $rs1[4:0];
    $rd2_index[4:0] = $rs2[4:0];
-   
    $src1_value[31:0] = $rd1_data[31:0];
    $src2_value[31:0] = $rd2_data[31:0];
    
    $result[31:0] = $is_addi ? $src1_value + $imm :
                    $is_add ? $src1_value + $src2_value :
                              32'b0;
+   
+   $wr_en = $rd_valid && ($rd != 5'b0);
+   $wr_index[4:0] = $rd[4:0];
+   $wr_data[31:0] = $result;
    
    `BOGUS_USE($rd $rd_valid $rs1 $rs1_valid $funct3 $funct7 $imm_valid $opcode $rs2 $rs2_valid $funct3_valid $funct7_valid $imm
       $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add)
