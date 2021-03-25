@@ -80,7 +80,19 @@
                 $is_j_instr ? { {12{$instr[31]}}, $instr[19:12], $instr[20], $instr[30:21], 1'b0 } :
                 32'b0;  // Default
    
-   `BOGUS_USE($rd $rd_valid $rs1 $rs1_valid $funct3 $funct7 $imm_valid $opcode $rs2 $rs2_valid $funct3_valid $funct7_valid $imm)
+   $dec_bits[10:0] = {$funct7[5],$funct3,$opcode};
+   
+   $is_beq = $dec_bits ==? 11'bx_000_1100011;
+   $is_bne = $dec_bits ==? 11'bx_001_1100011;
+   $is_blt = $dec_bits ==? 11'bx_100_1100011;
+   $is_bge = $dec_bits ==? 11'bx_101_1100011;
+   $is_bltu = $dec_bits ==? 11'bx_110_1100011;
+   $is_bgeu = $dec_bits ==? 11'bx_111_1100011;
+   $is_addi = $dec_bits ==? 11'bx_000_0010011;
+   $is_add = $dec_bits ==? 11'b0_000_0110011;
+   
+   `BOGUS_USE($rd $rd_valid $rs1 $rs1_valid $funct3 $funct7 $imm_valid $opcode $rs2 $rs2_valid $funct3_valid $funct7_valid $imm
+      $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add)
    
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
