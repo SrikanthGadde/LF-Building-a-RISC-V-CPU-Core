@@ -107,8 +107,16 @@
    $wr_index[4:0] = $rd[4:0];
    $wr_data[31:0] = $result;
    
+   $taken_br = $is_beq ? ($src1_value == $src2_value) :
+               $is_bne ? ($src1_value != $src2_value) :
+               $is_blt ? (($src1_value < $src2_value) ^ ($src1_value[31] != $src2_value[31])) :
+               $is_bge ? (($src1_value >= $src2_value) ^ ($src1_value[31] != $src2_value[31])) :
+               $is_bltu ? ($src1_value < $src2_value) :
+               $is_bgeu ? ($src1_value >= $src2_value) :
+                          1'b0;
+   
    `BOGUS_USE($rd $rd_valid $rs1 $rs1_valid $funct3 $funct7 $imm_valid $opcode $rs2 $rs2_valid $funct3_valid $funct7_valid $imm
-      $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add)
+      $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add $taken_br)
    
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
