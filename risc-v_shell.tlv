@@ -97,6 +97,10 @@
    $src1_value[31:0] = $rd1_data[31:0];
    $src2_value[31:0] = $rd2_data[31:0];
    
+   $result[31:0] = $is_addi ? $src1_value + $imm :
+                   $is_add ? $src1_value + $src2_value :
+                             32'b0;
+   
    `BOGUS_USE($rd $rd_valid $rs1 $rs1_valid $funct3 $funct7 $imm_valid $opcode $rs2 $rs2_valid $funct3_valid $funct7_valid $imm
       $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add)
    
