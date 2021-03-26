@@ -154,7 +154,7 @@
    //RF_WRITE
    $wr_en = $rd_valid && ($rd != 5'b0);
    $wr_index[4:0] = $rd[4:0];
-   $wr_data[31:0] = $result;
+   $wr_data[31:0] = $is_load ? $ld_data : $result;
    
    //TAKEN_BR
    $taken_br = $is_beq ? $src1_value == $src2_value :
@@ -179,7 +179,7 @@
    *failed = *cyc_cnt > M4_MAX_CYC;
    
    m4+rf(32, 32, $reset, $wr_en, $wr_index[4:0], $wr_data[31:0], $rd1_en, $rd1_index[4:0], $rd1_data, $rd2_en, $rd2_index[4:0], $rd2_data)
-   //m4+dmem(32, 32, $reset, $addr[4:0], $wr_en, $wr_data[31:0], $rd_en, $rd_data)
+   m4+dmem(32, 32, $reset, $result[6:2], $is_s_instr, $src2_value[31:0], $is_load, $ld_data)
    m4+cpu_viz()
 \SV
    endmodule
