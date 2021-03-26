@@ -147,6 +147,8 @@
                                     {31'b0, $src1_value[31]} ) :
                    $is_sra ? $sra_rslt[31:0] :
                    $is_srai ? $srai_rslt[31:0] :
+                   $is_load ? $src1_value + $imm :
+                   $is_s_instr ? $src1_value + $imm :
                              32'b0;
    
    //RF_WRITE
@@ -169,7 +171,7 @@
    //JUMP
    $jalr_tgt_pc[31:0] = $src1_value + $imm;
    
-   `BOGUS_USE($imm_valid $funct3_valid $funct7_valid $is_load);
+   `BOGUS_USE($imm_valid $funct3_valid $funct7_valid);
    
    // Assert these to end simulation (before Makerchip cycle limit).
    //TB
